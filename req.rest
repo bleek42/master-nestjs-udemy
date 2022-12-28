@@ -1,0 +1,9 @@
+POST http://localhost:7000/api/events/new HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "How to Effectively Sell Yourself as a Software Engineer",
+  "description": "Have you ever wondered what it takes to make the 'perfect' first impression to a company? Wonder no more! In this interactive workshop, we will discuss building your brand image as a software engineer with: LinkedIn, resume, GitHub, Portfolio Website, software projects you've developed.",
+  "location": "remote",
+  "organizer": "Skilled inc."
+}
