@@ -1,16 +1,16 @@
-FROM node:16.15.0-alpine:3.15 AS development
+FROM node:18-alpine3.16 AS development
 
-EXPOSE 7000 15432
+EXPOSE 7000
+WORKDIR /apps/nodejs/master-nestjs
+RUN npm config set cache /apps/nodejs/master-nestjs/ --global
 
-RUN mkdir -p /usr/home/app
-RUN npm config set cache /usr/home/app/.npm-cache --global
-
-WORKDIR /usr/home/app
-
-COPY packake-lock.json /usr/home/app/
-COPY package.json usr/home/app
+COPY package-lock.json /apps/nodejs/master-nestjs/
+COPY package.json /apps/nodejs/master-nestjs/
 RUN npm install
 COPY . .
 
-RUN npm run build
-CMD ./start.sh
+RUN npm run build /apps/nodejs/master-nestjs/
+
+COPY start.sh /apps/nodejs/master-nestjs/
+
+CMD ["/bin/sh", "-c" "'./start.sh'"]

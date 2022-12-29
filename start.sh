@@ -1,9 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-if [ "$NODE_ENV" == "production" ] ; then
-  npm run start
-elif [ "$NODE_ENV" == "test" ] ; then
-  npm run start:debug
-else
-  npm run dev
-fi
+case "${NODE_ENV}" in
+"production")
+  eval "$(npm run start:prod)"
+  ;;
+"test")
+  eval "$(npm run start:debug)"
+  ;;
+"development")
+  eval "$(npm run start:dev)"
+  ;;
+esac
