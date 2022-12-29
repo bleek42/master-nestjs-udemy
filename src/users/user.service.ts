@@ -1,8 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { User } from './entities/user.entity';
+import { User } from '../database/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -23,7 +23,7 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  findAll() {
+  public async findAll() {
     return `This action returns all user`;
   }
 
@@ -31,11 +31,12 @@ export class UserService {
     return await this.userRepository.findOneBy({ id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  public async update(id: number, updates: UpdateUserDto) {
+    const existingUser = await this.userRepository.findOneBy({ id });
+    return existingUser ?? { ...existingUser, updates?. };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  public async remove(id: number): Promise<void> {
+    this.userRepository.delete({ id });
   }
 }

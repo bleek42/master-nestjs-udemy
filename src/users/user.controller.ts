@@ -13,22 +13,22 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  public async findAll() {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
   public async getUserById(@Param('id') id: number) {
-    return this.userService.findOneById(id);
+    return await this.userService.findOneById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  public async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.userService.remove(+id);
+  public async remove(@Param('id') id: number) {
+    return await this.userService.remove(+id);
   }
 }
