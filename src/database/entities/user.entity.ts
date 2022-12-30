@@ -15,11 +15,20 @@ import { randomUUID, RandomUUIDOptions } from 'crypto';
 import * as argon2 from 'argon2';
 import { Event } from './event.entity';
 
+const timeActive = new Date().toLocaleString();
+
 enum ACTIVE_USER {
   'INACTIVE' = 0,
-  'RECENTLY' = 1,
-  'CURRENTLY' = 2,
+  'RECENT' = 1,
+  'ACTIVE' = 2,
 }
+
+type ActivityStats = {
+  begin?: Date;
+  end?: Date;
+  timeElapsed?: () => typeof Date;
+  status: ACTIVE_USER[keyof ACTIVE_USER];
+};
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -82,7 +91,7 @@ export class User extends BaseEntity {
     unique: true,
     nullable: false,
   })
-  public upcomingEvents?: Array<Event | string>;
+  public upcomingEvents?: Array<Event | string | void>;
 
   @Column({
     name: 'past_events',
@@ -93,7 +102,7 @@ export class User extends BaseEntity {
     default: [],
     nullable: false,
   })
-  protected pastEvents?: Array<Event | string>;
+  protected pastEvents?: Array<Event | string | void>;
 
   @Column({ type: 'varchar', length: 256, charset: 'UTF-8', nullable: false })
   @Exclude({ toPlainOnly: true })
@@ -103,18 +112,13 @@ export class User extends BaseEntity {
   protected isAdmin!: boolean;
 
   @Column({ type: 'array', default: [], array: true })
-  public;
+  public hostedEvents?: Array<Event | string | void>;
 
   @CreateDateColumn({ type: 'timestamp', default: new Date().toUTCString() })
   public readonly createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp', default: new Date().toUTCString() })
   public updatedAt: Date;
-
-  @BeforeInsert()
-  async setUid(opts?: RandomUUIDOptions) {
-    this.uid = randomUUID(opts);
-  }
 
   @BeforeInsert()
   @BeforeUpdate()

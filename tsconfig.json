@@ -21,7 +21,7 @@
 		"baseUrl": ".",
 		"rootDirs": ["./src", "./test"],
 		"paths": {
-			"@entities/*": ["./src/database/entities/*.entity.ts"],
+			"@entities/*": ["./database/entities/*.entity.ts"],
 			"@interfaces/*": ["./interfaces/*.ts"],
 			"@dto/*": ["./{event,users}/*.dto.ts"],
 			"@controllers/*": ["./{event,users}/*.controller.ts"],
