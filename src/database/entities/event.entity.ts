@@ -11,6 +11,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
+import { User } from './user.entity';
 // import { User } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'events' })
@@ -47,7 +48,11 @@ export class Event extends BaseEntity {
   // @ManyToOne(() => User, (user) => user.username)
   @Column({ type: 'varchar', length: 30 })
   @Expose()
-  public organizer!: string;
+  public organizer!: User | string;
+
+  @Column({ type: 'array' })
+  @Expose({ groups: ['users'] })
+  public attendees?: Array<User | string>;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: new Date().toUTCString() })
   public readonly createdAt: Date;

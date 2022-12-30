@@ -31,9 +31,22 @@ export class UserService {
     return await this.userRepository.findOneBy({ id });
   }
 
+  public async findOneByEmail(email: string): Promise<User> {
+    const existingUserWithEmail = await this.userRepository.findOne({ where: { email } });
+    existingUserWithEmail ?? existingUserWithEmail;
+  }
+
   public async update(id: number, updates: UpdateUserDto) {
-    const existingUser = await this.userRepository.findOneBy({ id });
-    return existingUser ?? { ...existingUser, updates?. };
+    const existingUser = await this.findOneById(id);
+    return (
+      existingUser ?? {
+        ...existingUser,
+        id: updates?.id,
+        username: updates?.username,
+        email: updates?.email,
+        isAdmin: updates?.isAdmin,
+      }
+    );
   }
 
   public async remove(id: number): Promise<void> {

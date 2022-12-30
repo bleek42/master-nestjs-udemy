@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateEventDto } from './create-event.dto';
+import { Event } from '@entities/event';
+import { isArray } from 'class-validator';
+export class UpdateEventDto implements Partial<Event> {
+  public title?: string;
 
-export class UpdateEventDto extends PartialType(CreateEventDto) {}
+  public description?: string;
+
+  public when?: Date;
+}

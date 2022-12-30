@@ -4,6 +4,10 @@ import { Event } from '../database/entities/event.entity';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
+import { Query } from 'typeorm/driver/Query.js';
+import { Request } from 'express';
+import { Req } from '@nestjs/common/decorators/index';
 
 @Controller('events')
 export class EventController {
@@ -11,28 +15,32 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post('new')
-  public async postEvent(@Body() body: CreateEventDto): Promise<Event> {
+  public async postEvent(@Req() req: Request, @Body() body: CreateEventDto): Promise<void> {
     this.logger.debug(body);
-    return await this.eventService.create(body);
+    if (body?.title && body?.description && body?.location && body?.when && body?.organizer) {
+      await this.eventService.create(body);
+    }
   }
 
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  public async getAllEvents(@Req() req: Request) {
+    this.logger.log(`GET /api/events req. obj: ${JSON.stringify(req)}`);
+    if (req) return await this.eventService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventService.findOne(+id);
+  public async getEventById(@Param('id', ParseIntPipe) id: number) {
+    return this.eventService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(+id, updateEventDto);
+  public async updateEvent(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateEventDto) {
+    const existingEvent = await this.eventService.findById(id);
+    return existingEvent ?? (await this.eventService.update(id, body));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventService.remove(+id);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.eventService.remove(id);
   }
 }
