@@ -91,7 +91,7 @@ export class User extends BaseEntity {
     unique: true,
     nullable: false,
   })
-  public upcomingEvents?: Array<Event | string | void>;
+  public upcomingEvents?: Array<Event | string | null>;
 
   @Column({
     name: 'past_events',
@@ -102,7 +102,7 @@ export class User extends BaseEntity {
     default: [],
     nullable: false,
   })
-  protected pastEvents?: Array<Event | string | void>;
+  public pastEvents?: Array<Event | string | null>;
 
   @Column({ type: 'varchar', length: 256, charset: 'UTF-8', nullable: false })
   @Exclude({ toPlainOnly: true })
@@ -131,4 +131,9 @@ export class User extends BaseEntity {
   async comparePassword(passwordTxt: string): Promise<boolean> {
     return await argon2.verify(this.password, passwordTxt);
   }
+
+  //   @BeforeUpdate()
+  //  async checkIfHas(params:type) => {
+
+  //  }
 }
