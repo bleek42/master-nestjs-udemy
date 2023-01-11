@@ -1,13 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
+import { Request } from 'express';
+import {
+  Controller,
+  Req,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Logger,
+  ParseIntPipe,
+} from '@nestjs/common';
 
-import { Event } from '@entities/event.entity';
+import { Event } from '../database/entities/event.entity';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ParseIntPipe } from '@nestjs/common/pipes/parse-int.pipe';
-import { Query } from 'typeorm/driver/Query.js';
-import { Request } from 'express';
-import { Req } from '@nestjs/common/decorators/index';
 
 @Controller('events')
 export class EventController {
@@ -34,7 +42,10 @@ export class EventController {
   }
 
   @Patch(':id')
-  public async updateEvent(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateEventDto) {
+  public async updateEvent(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateEventDto
+  ) {
     const existingEvent = await this.eventService.findById(id);
     return existingEvent ?? (await this.eventService.update(id, body));
   }

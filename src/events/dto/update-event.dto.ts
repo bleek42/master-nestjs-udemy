@@ -1,5 +1,5 @@
-import { Event } from '@entities/event';
-import { isArray } from 'class-validator';
+import { Event } from '../../database/entities/event.entity';
+import { IsArray, isArray } from 'class-validator';
 import { User } from '../../database/entities/user.entity';
 export class UpdateEventDto implements Partial<Event> {
   public title?: string;
@@ -12,5 +12,6 @@ export class UpdateEventDto implements Partial<Event> {
 
   public organizer?: User | string;
 
+  @IsArray()
   public attendees?: Array<User | string | null>;
 }

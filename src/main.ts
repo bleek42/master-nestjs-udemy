@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-import { AppModule } from './app.module';
+import { AppModule } from './app.module.js';
 
 async function main() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -14,8 +14,8 @@ async function main() {
   app.setGlobalPrefix('/api');
   await app.listen(port, () =>
     console.info(
-      `Nest.js REST API server live, running...\n Listening at 'http://localhost:${port}' for requests/changes`,
-    ),
+      `Nest.js REST API server live, running...\n Listening at 'http://localhost:${port}' for requests/changes`
+    )
   );
 }
 

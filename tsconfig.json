@@ -1,33 +1,68 @@
 {
 	"compilerOptions": {
-		"module": "ES2020",
+		"strict": true,
+		"module": "ES6",
+		"esModuleInterop": true,
 		"declaration": true,
 		"removeComments": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
-		"target": "ES2017",
+		"target": "ES6",
 		"sourceMap": true,
+		"rootDir": "src/",
 		"outDir": "./dist",
-		"lib": ["ES2020"],
+		"lib": [
+			"ES7"
+		],
 		"incremental": true,
 		"skipLibCheck": true,
 		"strictNullChecks": false,
 		"noImplicitAny": true,
 		"strictBindCallApply": false,
-		"forceConsistentCasingInFileNames": false,
+		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": false,
-		"moduleResolution": "Node16",
+		"moduleResolution": "Node",
+		// "moduleSuffixes": [
+		// 	"module",
+		// 	"service",
+		// 	"controller",
+		// 	"entity",
+		// 	"dto",
+		// 	"spec",
+		// 	"util"
+		// ],
 		"baseUrl": ".",
-		"rootDirs": ["./src", "./test"],
-		"paths": {
-			"@entities/*": ["./database/entities/*.ts"],
-			"@interfaces/*": ["./interfaces/*.ts"],
-			"@dto/*": ["./{event,users}/*.dto.ts"],
-			"@controllers/*": ["./{event,users}/*.controller.ts"],
-			"@services/*": ["./{event,users}/*.service.ts"],
-			"@utils/*": ["./utils/*util.ts"],
-			"@spec/*": ["./{event,users,utils,database}/*.spec.ts"]
-		}
+		// "paths": {
+		// 	"@entities/": [
+		// 		"database/entities/*"
+		// 	],
+		// 	"@interfaces/": [
+		// 		"interfaces/*"
+		// 	],
+		// 	"@dto/": [
+		// 		"events/dto/*",
+		// 		"users/dto/*"
+		// 	],
+		// 	"@modules/": [
+		// 		"events/*",
+		// 		"users/*"
+		// 	],
+		// 	"@services/": [
+		// 		"users/*"
+		// 	],
+		// 	"@controllers/": [
+		// 		"events/*"
+		// 	],
+		// 	"@utils/": [
+		// 		"utils/*"
+		// 	],
+		// 	"@spec/": [
+		// 		"events/*",
+		// 		"users/*",
+		// 		"utils/*",
+		// 		"database/*"
+		// 	]
+		// }
 	}
 }

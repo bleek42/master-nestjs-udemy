@@ -1,3 +1,6 @@
+import * as argon2 from '@node-rs/argon2';
+import { randomUUID, RandomUUIDOptions } from 'crypto';
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   BaseEntity,
@@ -9,10 +12,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 
-import { randomUUID, RandomUUIDOptions } from 'crypto';
-import * as argon2 from 'argon2';
 import { Event } from './event.entity';
 
 const timeActive = new Date().toLocaleString();

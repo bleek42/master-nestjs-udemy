@@ -11,8 +11,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
+
 import { User } from './user.entity';
-// import { User } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'events' })
 export class Event extends BaseEntity {

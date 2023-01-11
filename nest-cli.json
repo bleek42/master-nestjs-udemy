@@ -1,11 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/nest-cli",
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src/",
-  "entryFile": "server",
-  "compilerOptions": {
-	"assets": ["tsconfig.*", "**/*.env", "**/*.sh"],
-	"watchAssets": true,
-	"plugins": []
-  }
+	"$schema": "https://json.schemastore.org/nest-cli",
+	"collection": "@nestjs/schematics",
+	"sourceRoot": "src/"
 }

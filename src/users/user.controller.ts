@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from '@users/user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -9,7 +9,7 @@ export class UserController {
 
   @Post('register')
   public async create(@Body() body: CreateUserDto): Promise<void> {
-    const existingUserHas = await this.userService.
+    const existingUserHas = await this.userService;
     const newUser = await this.userService.create({ ...user });
   }
 
