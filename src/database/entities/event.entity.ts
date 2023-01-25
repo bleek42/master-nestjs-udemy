@@ -45,8 +45,8 @@ export class Event extends BaseEntity {
   @Expose()
   public location?: string;
 
-  // @ManyToOne(() => User, (user) => user.username)
   @Column({ type: 'varchar', length: 30 })
+  @ManyToOne(() => User, (user) => user.handle)
   @Expose()
   public organizer!: User | string;
 
@@ -54,9 +54,17 @@ export class Event extends BaseEntity {
   @Expose({ groups: ['users'] })
   public attendees?: Array<User | string>;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: new Date().toUTCString() })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    default: new Date().toUTCString(),
+  })
   public readonly createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: new Date().toUTCString() })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    default: new Date().toUTCString(),
+  })
   public updatedAt: Date;
 }

@@ -12,13 +12,13 @@ export class UserService {
   private readonly userRepository: Repository<User>;
 
   public async create(createUserDto: CreateUserDto): Promise<User> {
-    const { username, email, password, confirmPassword } = createUserDto;
+    const { handle, email, password, confirmPassword } = createUserDto;
     if (password !== confirmPassword) {
       throw new BadRequestException(
-        'ERROR: Cannot POST /user - password and confirm password are not a match.',
+        'ERROR: Cannot POST /user - password and confirm password are not a match.'
       );
     }
-    const user = new User({ username, email, password });
+    const user = new User({ handle, email, password });
     console.log(user);
     return await this.userRepository.save(user);
   }
@@ -33,7 +33,7 @@ export class UserService {
 
   public async findOneByEmail(email: string): Promise<User> {
     const existingUserWithEmail = await this.userRepository.findOne({ where: { email } });
-    existingUserWithEmail ?? existingUserWithEmail;
+    return existingUserWithEmail ?? existingUserWithEmail;
   }
 
   public async update(id: number, updates: UpdateUserDto) {
@@ -42,7 +42,7 @@ export class UserService {
       existingUser ?? {
         ...existingUser,
         id: updates?.id,
-        username: updates?.username,
+        handle: updates?.handle,
         email: updates?.email,
         isAdmin: updates?.isAdmin,
       }

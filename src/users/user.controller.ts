@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UserService } from '@users/user.service';
+import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -8,9 +8,17 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  public async create(@Body() body: CreateUserDto): Promise<void> {
-    const existingUserHas = await this.userService;
-    const newUser = await this.userService.create({ ...user });
+  public async create(@Body() body: CreateUserDto): Promise<boolean> {
+    const existingUser = await this.userService.findOneByEmail(body?.email);
+    if (
+      (existingUser && body?.email === existingUser.email) ||
+      body?.handle === existingUser.handle
+    ) {
+      throw new Error('existing user error!');
+    }
+    const newUser = await this.userService.create({ ...body });
+    console.log('creating new user...', newUser);
+    return newUser ? true : false;
   }
 
   @Get()

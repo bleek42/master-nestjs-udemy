@@ -11,6 +11,9 @@ import {
   PrimaryColumnOptions,
   BeforeInsert,
   BeforeUpdate,
+  ManyToMany,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 import { Event } from './event.entity';
@@ -23,7 +26,7 @@ enum ACTIVE_USER {
   'ACTIVE' = 2,
 }
 
-type ActivityStats = {
+type ActiveStatus = {
   begin?: Date;
   end?: Date;
   timeElapsed?: () => typeof Date;
@@ -42,7 +45,7 @@ export class User extends BaseEntity {
     comment:
       'basic, easy to locate, typically auto-incrmenting id column to keep track of signups, short-term timeline by order of the earliest account registrations yet still mutable if it needs to change',
   })
-  protected id!: number;
+  public id!: number;
 
   @PrimaryGeneratedColumn('uuid', {
     name: 'uid',
@@ -50,7 +53,7 @@ export class User extends BaseEntity {
       'unique user id randomly generated, set to modern UUID string format: gives all users genuinely unique, immutable value that can never be altered & completely immutable.',
     primaryKeyConstraintName: 'usr_uuid',
   })
-  protected readonly uid: string;
+  private readonly uid: string;
 
   @Column({
     name: 'user_name',
@@ -59,20 +62,34 @@ export class User extends BaseEntity {
     unique: true,
     nullable: false,
   })
-  public username!: string;
+  public readonly handle!: string;
 
   @Column({ unique: true, type: 'varchar', length: 96 })
   public email!: string;
 
+  @Column({ type: 'varchar', length: 256, charset: 'UTF-8', nullable: false })
+  @Exclude({ toPlainOnly: true })
+  public password!: string;
+
   @Column({
-    name: 'full_name',
+    name: 'first_name',
     type: 'varchar',
     length: 96,
     unique: true,
     nullable: false,
     update: false,
   })
-  public readonly fullName!: string;
+  public readonly firstName!: string;
+
+  @Column({
+    name: 'last_name',
+    type: 'varchar',
+    length: 96,
+    unique: true,
+    nullable: false,
+    update: false,
+  })
+  public readonly lastName!: string;
 
   @Column({
     name: 'active_status',
@@ -89,9 +106,10 @@ export class User extends BaseEntity {
     array: true,
     length: 32,
     unique: true,
-    nullable: false,
+    nullable: true,
   })
-  public upcomingEvents?: Array<Event | string | null>;
+  @OneToMany(() => Event, (event) => event.attendees, { nullable: true })
+  public upcomingEvents?: Array<Event> | Event;
 
   @Column({
     name: 'past_events',
@@ -100,16 +118,13 @@ export class User extends BaseEntity {
     length: 400,
     unique: false,
     default: [],
-    nullable: false,
+    nullable: true,
   })
-  public pastEvents?: Array<Event | string | null>;
-
-  @Column({ type: 'varchar', length: 256, charset: 'UTF-8', nullable: false })
-  @Exclude({ toPlainOnly: true })
-  protected password!: string;
+  @OneToMany(() => Event, (event) => event.attendees, { nullable: true })
+  public pastEvents?: Array<Event> | Event;
 
   @Column({ default: false })
-  protected isAdmin!: boolean;
+  public isAdmin!: boolean;
 
   @Column({ type: 'array', default: [], array: true })
   public hostedEvents?: Array<Event | string | void>;

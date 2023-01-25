@@ -1,11 +1,14 @@
-import { User } from '@entities/user';
+import { User } from '../../database/entities/user.entity';
+import { Event } from 'src/database/entities/event.entity';
 
 export class UpdateUserDto implements Partial<User> {
-  id: number;
+  public id: number;
 
-  public username?: string;
+  public email: string;
 
-  email?: string;
+  public isAdmin: boolean;
 
-  isAdmin: string;
+  upcomingEvents?: Event[] | Event;
+
+  pastEvents?: Event[] | Event;
 }

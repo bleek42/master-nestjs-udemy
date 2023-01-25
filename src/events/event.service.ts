@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { Event } from '../database/entities/event.entity';
+import { Event } from 'src/database/entities/event.entity';
 import { User } from 'src/database/entities/user.entity';
 
 @Injectable()
@@ -24,23 +24,23 @@ export class EventService {
     return this.eventsRepository.findOneBy({ id });
   }
 
-  public async findEventsByUserOrganizer(username: string): Promise<Array<Event | User>> {
+  public async findEventsByUserOrganizer(email: string): Promise<Array<Event | User>> {
     const eventDate = new Date();
     this.logger.debug(
       'EventService.findEventsByUserOrganizer debug log:',
-      eventDate.toLocaleDateString(),
+      eventDate.toLocaleDateString()
     );
     const userHasEventsOrganized = await this.eventsRepository.find({
-      where: { organizer: username, when: eventDate },
+      where: { organizer: email, when: eventDate },
     });
 
     return userHasEventsOrganized ?? userHasEventsOrganized;
   }
 
-  public async update(id: number, updates: UpdateEventDto) {
-    const existingEvent = await this.findById(id);
-    return existingEvent ?? (await this.eventsRepository.update({ id, ...existingEvent }, updates));
-  }
+  // public async update(id: number, updates: UpdateEventDto) {
+  //   const existingEvent = await this.findById(id);
+  //   return existingEvent ?? (await this.eventsRepository.update({ id, ...existingEvent }, updates));
+  // }
 
   public async remove(id: number): Promise<void> {
     await this.eventsRepository.delete(id);
