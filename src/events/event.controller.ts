@@ -16,6 +16,7 @@ import { Event } from '../database/entities/event.entity';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { DeleteResult } from 'typeorm';
 
 @Controller('events')
 export class EventController {
@@ -51,7 +52,7 @@ export class EventController {
   }
 
   @Delete(':id')
-  public async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.eventService.remove(id);
+  public async remove(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult | void> {
+    return await this.eventService.remove(id);
   }
 }

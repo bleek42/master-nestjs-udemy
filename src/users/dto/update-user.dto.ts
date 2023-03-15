@@ -1,5 +1,5 @@
 import { User } from '../../database/entities/user.entity';
-import { Event } from 'src/database/entities/event.entity';
+import { Event } from '../../database/entities/event.entity';
 
 export class UpdateUserDto implements Partial<User> {
   public id: number;

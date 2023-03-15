@@ -1,13 +1,25 @@
+import * as path from 'path';
+import * as fs from 'fs';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { readEnv } from './utils/env.util';
-import { ConfigUtil } from './utils/config.util';
-
+import { TypeOrmService } from './database/typeorm.service';
 import { UserModule } from './users/user.module';
 import { EventModule } from './events/event.module';
 // import { User } from './user/entities/user.entity';
+
+function readEnv(destination: string): string {
+  const env: string | undefined = process.env.NODE_ENV;
+  const fallback: string = path.resolve(`${destination}/.env`);
+  const fileName: string = env ? `${env}.env` : 'development.env';
+
+  let file: string = path.resolve(`${destination}/${fileName}`);
+
+  if (!fs.existsSync(file)) file = fallback;
+
+  return file;
+}
 
 const envFilePath: string = readEnv(`${__dirname}/.env`);
 
@@ -15,26 +27,12 @@ const envFilePath: string = readEnv(`${__dirname}/.env`);
   imports: [
     ConfigModule.forRoot({
       envFilePath,
-      isGlobal: true,
       cache: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      useClass: TypeOrmService,
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        database: configService.get<string>('DATABASE_NAME'),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        entities: [`dist/**/entities/*.entity.{ts,js}`],
-        migrations: ['dist/migrations/*.{ts,js}'],
-        logger: 'file',
-        logging: 'all',
-        synchronize: true,
-        entitySkipConstructor: false,
-      }),
     }),
     UserModule,
     EventModule,

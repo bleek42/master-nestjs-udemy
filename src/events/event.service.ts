@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { Event } from 'src/database/entities/event.entity';
-import { User } from 'src/database/entities/user.entity';
+import { Event } from '../database/entities/event.entity';
+import { User } from '../database/entities/user.entity';
 
 @Injectable()
 export class EventService {
@@ -37,12 +37,14 @@ export class EventService {
     return userHasEventsOrganized ?? userHasEventsOrganized;
   }
 
-  // public async update(id: number, updates: UpdateEventDto) {
-  //   const existingEvent = await this.findById(id);
-  //   return existingEvent ?? (await this.eventsRepository.update({ id, ...existingEvent }, updates));
-  // }
+  public async update(id: number, updates: UpdateEventDto): Promise<UpdateResult | void> {
+    const existingEvent = await this.findById(id);
 
-  public async remove(id: number): Promise<void> {
-    await this.eventsRepository.delete(id);
+    existingEvent ??
+      (await this.eventsRepository.update({ id }, { ...existingEvent, ...updates }));
+  }
+
+  public async remove(id: number): Promise<DeleteResult> {
+    return await this.eventsRepository.delete(id);
   }
 }

@@ -1,4 +1,4 @@
-FROM node:18.12.1-alpine3.16 AS development
+FROM node:18-alpine3.17 AS development
 
 EXPOSE 7000
 WORKDIR /apps/nodejs/master-nestjs

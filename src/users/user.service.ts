@@ -39,13 +39,14 @@ export class UserService {
   public async update(id: number, updates: UpdateUserDto) {
     const existingUser = await this.findOneById(id);
     return (
-      existingUser ?? {
-        ...existingUser,
-        id: updates?.id,
-        handle: updates?.handle,
-        email: updates?.email,
-        isAdmin: updates?.isAdmin,
-      }
+      existingUser ??
+      (await this.userRepository.update(
+        { id },
+        {
+          ...existingUser,
+          ...updates,
+        }
+      ))
     );
   }
 

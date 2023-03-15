@@ -10,7 +10,7 @@
 		"allowSyntheticDefaultImports": true,
 		"target": "ES6",
 		"sourceMap": true,
-		"rootDir": "src/",
+		"rootDir": "./",
 		"outDir": "./dist",
 		"lib": [
 			"ES7"
@@ -23,6 +23,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": false,
 		"moduleResolution": "Node",
+		"baseUrl": "./src",
 		// "moduleSuffixes": [
 		// 	"module",
 		// 	"service",
@@ -32,7 +33,6 @@
 		// 	"spec",
 		// 	"util"
 		// ],
-		"baseUrl": ".",
 		// "paths": {
 		// 	"@entities/": [
 		// 		"database/entities/*"
