@@ -1,5 +1,3 @@
-import * as path from 'path';
-import * as fs from 'fs';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
@@ -8,26 +6,12 @@ import {
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
 
-import { DatabaseService } from './database/database.service';
-import { UserModule } from './users/user.module';
-import { EventModule } from './events/event.module';
+import { envFilePath } from 'utils/env.util';
+import { UserModule } from 'users/user.module';
+import { EventModule } from 'events/event.module';
 // import { User } from './user/entities/user.entity';
 // import { DatabaseModule } from './database/database.module';
 // import { TypeOrmConfig } from 'database/config/typeorm.config';
-
-function readEnvPath(destination: string): string {
-  const env: string | undefined = process.env.NODE_ENV;
-  const fallback: string = path.resolve(`${destination}/.env`);
-  const fileName: string = env ? `${env}.env` : 'development.env';
-
-  let file: string = path.resolve(`${destination}/${fileName}`);
-
-  if (!fs.existsSync(file)) file = fallback;
-
-  return file;
-}
-
-const envFilePath: string = readEnvPath(`${__dirname}/.env`);
 
 @Module({
   imports: [
